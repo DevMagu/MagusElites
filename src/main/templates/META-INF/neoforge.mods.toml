@@ -1,0 +1,38 @@
+# Ficha del mod. Las variables con dolar y llaves se rellenan solas con los valores de gradle.properties al
+# compilar (ojo: no escribas esa forma ni en los comentarios, porque Gradle intentaria sustituirla y falla).
+modLoader="javafml"
+loaderVersion="[1,)"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="Magu"
+# Imagen de la lista de mods (está en src/main/resources). logoBlur=false: que el pixel art se vea nítido, sin difuminar.
+logoFile="logo.png"
+logoBlur=false
+description='''
+Algunos monstruos aparecen como élites (Fuerte, Élite o Legendario): más vida, daño y poderes de combate, y sueltan equipo especial al morir.
+Solo hace falta en el servidor.
+'''
+# Mod solo de servidor: los jugadores que no lo tengan instalado pueden entrar igual.
+displayTest="IGNORE_SERVER_VERSION"
+
+# Lista de mixins (codigo que se inyecta dentro de clases de Minecraft). Esta en src/main/resources.
+[[mixins]]
+config="${mod_id}.mixins.json"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

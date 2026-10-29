@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.magu.maguselites.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MobSunBurnMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
