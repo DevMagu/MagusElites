@@ -35,6 +35,7 @@ public final class MagusConfig {
     // ---- legendarios ----
     public static final ModConfigSpec.DoubleValue GLOW_DISTANCE;
     public static final ModConfigSpec.BooleanValue LEGENDARIES_IGNORE_SUN;
+    public static final ModConfigSpec.BooleanValue SHOW_PARTICLES;
 
     /** La "especificacion": la lista de todas las opciones. Se apunta en el constructor de MagusElites. */
     public static final ModConfigSpec SPEC;
@@ -87,8 +88,15 @@ public final class MagusConfig {
         LEGENDARIES_IGNORE_SUN = builder.comment("If true, Legendaries don't burn in daylight.").define("legendariesIgnoreSun", true);
         builder.pop();
 
+        builder.comment("Visual effects around elites.").push("effects");
+        SHOW_PARTICLES = builder.comment("If true, elites are surrounded by particles of their tier's color.").define("showParticles", true);
+        builder.pop();
+
         SPEC = builder.build();
     }
+
+    // effects
+
 
     /** Ajustes de un rango. */
     public static TierSettings tier(EliteTier tier) {

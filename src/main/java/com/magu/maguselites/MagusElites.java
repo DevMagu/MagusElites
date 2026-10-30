@@ -41,5 +41,7 @@ public final class MagusElites {
         NeoForge.EVENT_BUS.addListener(EliteSpawns::onFinalizeSpawn);
         // Y este, en cada tick de cada entidad: el brillo de los Legendarios.
         NeoForge.EVENT_BUS.addListener(LegendaryGlow::onEntityTick);
+        // Otro en el mismo evento: las particulas de color alrededor de los elites.
+        NeoForge.EVENT_BUS.addListener(EliteParticles::onEntityTick);
     }
 }
