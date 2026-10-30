@@ -15,9 +15,6 @@ import net.minecraft.world.entity.monster.Monster;
  */
 public final class EliteSpawns {
 
-    /** Probabilidad de que un monstruo que aparece solo (de noche, en cuevas...) sea elite: 0.06 = 6 %. */
-    public static final float ELITE_CHANCE = 0.06f;
-
     /**
      * NeoForge llama a este metodo por cada mob que aparece (lo apuntamos en el constructor de MagusElites).
      * Es "static" porque no necesita guardar datos propios: todo lo que necesita viene dentro del evento.
@@ -48,8 +45,9 @@ public final class EliteSpawns {
         if (motivo == MobSpawnType.COMMAND) {
             hacerElite = true;                  // /summon: siempre, para poder probar
         } else if (motivo == MobSpawnType.NATURAL) {
-            // nextFloat() da un decimal al azar entre 0 y 1: es menor que 0.06 el 6 % de las veces.
-            hacerElite = mob.getRandom().nextFloat() < ELITE_CHANCE;
+            // nextDouble() da un decimal al azar entre 0 y 1: es menor que 0.06 el 6 % de las veces.
+            // La probabilidad sale de la config: .getAsDouble() lee el valor actual del archivo.
+            hacerElite = mob.getRandom().nextDouble() < MagusConfig.ELITE_CHANCE.getAsDouble();
         } else {
             hacerElite = false;                 // spawners, huevos...: nada (asi no hay granjas de elites)
         }

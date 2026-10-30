@@ -3,6 +3,7 @@ package com.magu.maguselites;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,10 @@ public final class MagusElites {
     public MagusElites(IEventBus modBus, ModContainer container) {
         LOGGER.info("Magu's Elites {} cargado correctamente!", container.getModInfo().getVersion());
         LOGGER.info("Disfruta de la experiencia!");
+
+        // Apuntamos la configuracion: NeoForge crea config/magus_elites-common.toml si no existe y lo lee.
+        // COMMON = una sola config para todo (servidor y mundos de un jugador).
+        container.registerConfig(ModConfig.Type.COMMON, MagusConfig.SPEC);
 
         // Apuntamos nuestro metodo al bus de eventos del JUEGO (NeoForge.EVENT_BUS): asi NeoForge lo llamara
         // cada vez que aparezca un mob. "EliteSpawns::onFinalizeSpawn" significa "el metodo onFinalizeSpawn de

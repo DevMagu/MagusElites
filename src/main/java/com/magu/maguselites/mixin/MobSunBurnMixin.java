@@ -2,6 +2,7 @@ package com.magu.maguselites.mixin;
 
 import com.magu.maguselites.EliteTier;
 import com.magu.maguselites.Elites;
+import com.magu.maguselites.MagusConfig;
 import net.minecraft.world.entity.Mob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +32,7 @@ public abstract class MobSunBurnMixin {
         // Dentro de un mixin, "this" ES el Mob de vanilla. Java no lo sabe, asi que se lo decimos con este doble cast.
         Mob self = (Mob) (Object) this;
 
-        if (Elites.getTier(self) == EliteTier.LEGENDARY) {
+        if (Elites.getTier(self) == EliteTier.LEGENDARY && MagusConfig.LEGENDARIES_IGNORE_SUN.getAsBoolean()) {
             cir.setReturnValue(false);   // "no te quemas" (y el resto del metodo de vanilla ya no se ejecuta)
         }
     }
