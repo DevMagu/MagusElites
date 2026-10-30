@@ -47,9 +47,9 @@ public final class Elites {
      */
     public static void makeElite(Mob mob, EliteTier tier) {
         // Los porcentajes salen del rango: un Legendary lleva +200 % de vida (x3), un Strong +50 %...
-        addModifier(mob, Attributes.MAX_HEALTH, "elite_health", tier.health, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-        addModifier(mob, Attributes.ATTACK_DAMAGE, "elite_damage", tier.damage, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-        addModifier(mob, Attributes.MOVEMENT_SPEED, "elite_speed", tier.speed, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        addModifier(mob, Attributes.MAX_HEALTH, "elite_health", tier.health(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        addModifier(mob, Attributes.ATTACK_DAMAGE, "elite_damage", tier.damage(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        addModifier(mob, Attributes.MOVEMENT_SPEED, "elite_speed", tier.speed(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
         mob.addTag(TAG);
         // name() da el nombre del valor en el codigo: "STRONG", "ELITE" o "LEGENDARY".

@@ -18,8 +18,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
  * o no. El mob en el servidor no brilla de verdad: solo se lo "contamos" a los que estan cerca.
  */
 public final class LegendaryGlow {
-    /** Distancia maxima (en bloques) a la que se ve el brillo. */
-    public static final double GLOW_DISTANCE = 20.0;
+    // La distancia del brillo esta en la configuracion: MagusConfig.GLOW_DISTANCE (seccion [legendary]).
 
     /** Cada cuantos ticks se comprueba (10 ticks = medio segundo). Cada tick seria demasiado trabajo para nada. */
     private static final int CHECK_EVERY_TICKS = 10;
@@ -47,13 +46,18 @@ public final class LegendaryGlow {
             return;
         }
 
+        double glowDistance = MagusConfig.GLOW_DISTANCE.getAsDouble();
+        if (glowDistance <= 0) {
+            return;     // 0 en la config = sin brillo
+        }
+
         // Las banderas de verdad del mob (por si esta ardiendo, o brilla por una flecha espectral...).
         byte realFlags = mob.getEntityData().get(SHARED_FLAGS);
 
         for (Player player : mob.level().players()) {
             // Distancia al cuadrado: es mas rapido que la distancia normal (no hace raiz cuadrada),
             // asi que la comparamos con 30 x 30 = 900.
-            boolean near = mob.distanceToSqr(player) <= GLOW_DISTANCE * GLOW_DISTANCE;
+            boolean near = mob.distanceToSqr(player) <= glowDistance * glowDistance;
 
             // | enciende el bit del brillo sin tocar los demas. Si esta lejos mandamos las banderas tal cual.
             byte flags = near ? (byte) (realFlags | GLOWING_BIT) : realFlags;
