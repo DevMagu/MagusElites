@@ -5,13 +5,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.minecraft.world.entity.monster.Monster;
 
 /**
- * Aqui decidiremos que monstruos se convierten en elite.
+ * Aqui se decide que les pasa a los monstruos al aparecer: su nivel y si se convierten en elite.
  *
- * De momento solo "escucha": cada vez que un mob termina de aparecer en el mundo, NeoForge lanza un
- * FinalizeSpawnEvent y nosotros escribimos en el log que mob es y como ha aparecido.
+ * Cada vez que un mob termina de aparecer en el mundo, NeoForge lanza un FinalizeSpawnEvent y nos llama.
  */
 public final class EliteSpawns {
 
@@ -25,8 +23,8 @@ public final class EliteSpawns {
         // El mob que acaba de aparecer (zombi, vaca, esqueleto...).
         Mob mob = event.getEntity();
 
-
-        if (!(mob instanceof Monster)) {
+        // ¿Le afecta el mod? Enemigos si, animales no, y las listas del datapack mandan (ver EliteTags).
+        if (!EliteTags.isAffected(mob)) {
             return;
         }
 
