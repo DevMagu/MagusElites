@@ -2,7 +2,11 @@ package com.magu.maguselites;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -28,6 +32,8 @@ public enum EliteTier {
     public final DustParticleOptions particle;
     /** Cuantas particulas suelta cada vez: mas cuanto mas alto el rango. */
     public final int particleCount;
+    /** Su loot table: magus_elites:elites/strong, elites/elite o elites/legendary (la usa EliteLoot). */
+    public final ResourceKey<LootTable> lootTable;
     /** Valores por defecto de la configuracion (peso, vida, daño y velocidad). */
     public final int defaultWeight;
     public final double defaultHealth;
@@ -44,6 +50,8 @@ public enum EliteTier {
         // que es lo que piden las particulas de polvo. 1.0F = tamaño normal de la particula.
         this.particle = new DustParticleOptions(Vec3.fromRGB24(color.getColor()).toVector3f(), 1.0F);
         this.particleCount = particleCount;
+        this.lootTable = ResourceKey.create(Registries.LOOT_TABLE,
+                ResourceLocation.fromNamespaceAndPath(MagusElites.MOD_ID, "elites/" + configName));
         this.defaultWeight = defaultWeight;
         this.defaultHealth = defaultHealth;
         this.defaultDamage = defaultDamage;

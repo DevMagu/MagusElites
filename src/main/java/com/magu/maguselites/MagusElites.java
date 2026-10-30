@@ -43,5 +43,7 @@ public final class MagusElites {
         NeoForge.EVENT_BUS.addListener(LegendaryGlow::onEntityTick);
         // Otro en el mismo evento: las particulas de color alrededor de los elites.
         NeoForge.EVENT_BUS.addListener(EliteParticles::onEntityTick);
+        // Cuando muere un mob: el botin de los elites.
+        NeoForge.EVENT_BUS.addListener(EliteLoot::onLivingDrops);
     }
 }
