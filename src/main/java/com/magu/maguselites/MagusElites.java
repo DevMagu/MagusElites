@@ -48,5 +48,7 @@ public final class MagusElites {
         // Poderes de combate: cuando alguien recibe daño, y en cada tick (el teletransporte).
         NeoForge.EVENT_BUS.addListener(EliteCombat::onDamage);
         NeoForge.EVENT_BUS.addListener(EliteCombat::onEntityTick);
+        // Los comandos /elite: se apuntan cada vez que el servidor prepara sus comandos.
+        NeoForge.EVENT_BUS.addListener(EliteCommands::onRegisterCommands);
     }
 }

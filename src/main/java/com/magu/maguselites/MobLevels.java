@@ -20,11 +20,16 @@ public final class MobLevels {
     /** Clave con la que guardamos el nivel dentro del mob. */
     private static final String LEVEL_KEY = "magus_elites_level";
 
-    /** Nivel que les toca a los monstruos que aparecen ahora mismo. */
-    public static int currentLevel(ServerLevel level) {
+    /** En que dia va el mundo (el primero es el 0). Tambien lo usa el comando /elite level. */
+    public static long currentDay(ServerLevel level) {
         // Usamos el reloj del Overworld: en el Nether y el End no hay dias, pero queremos el mismo nivel.
         long ticks = level.getServer().overworld().getDayTime();
-        long day = ticks / TICKS_PER_DAY;
+        return ticks / TICKS_PER_DAY;
+    }
+
+    /** Nivel que les toca a los monstruos que aparecen ahora mismo. */
+    public static int currentLevel(ServerLevel level) {
+        long day = currentDay(level);
 
         // Division entera: 7 / 3 = 2 (los decimales se tiran). Por eso el nivel cambia solo cada 3 dias.
         long mobLevel = 1 + day / MagusConfig.DAYS_PER_LEVEL.getAsInt();
