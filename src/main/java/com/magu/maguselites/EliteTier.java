@@ -17,10 +17,10 @@ import net.minecraft.world.phys.Vec3;
  */
 public enum EliteTier {
     // Estos numeros son los valores POR DEFECTO: los de verdad se leen de la configuracion (MagusConfig).
-    //        nombre      seccion config  color                particulas  peso  vida  daño  velocidad
-    STRONG("Strong", "strong", ChatFormatting.GREEN, 1, 70, 0.5, 0.25, 0.10),
-    ELITE("Elite", "elite", ChatFormatting.RED, 2, 25, 1.0, 0.50, 0.20),
-    LEGENDARY("Legendary", "legendary", ChatFormatting.YELLOW, 4, 5, 2.0, 1.00, 0.30);
+    //        nombre      seccion config  color                particulas  peso  vida  daño  velocidad  poderes min/max
+    STRONG("Strong", "strong", ChatFormatting.GREEN, 1, 70, 0.5, 0.25, 0.10, 0, 0),
+    ELITE("Elite", "elite", ChatFormatting.RED, 2, 25, 1.0, 0.50, 0.20, 1, 1),
+    LEGENDARY("Legendary", "legendary", ChatFormatting.YELLOW, 4, 5, 2.0, 1.00, 0.30, 2, 3);
 
     /** Nombre que se ve encima de la cabeza. */
     public final String displayName;
@@ -39,10 +39,14 @@ public enum EliteTier {
     public final double defaultHealth;
     public final double defaultDamage;
     public final double defaultSpeed;
+    /** Cuantos poderes de combate lleva (por defecto): Strong 0, Elite 1, Legendary 2 o 3. */
+    public final int defaultMinPowers;
+    public final int defaultMaxPowers;
 
     /** El constructor de un enum se llama una vez por cada valor de arriba, con los datos entre parentesis. */
     EliteTier(String displayName, String configName, ChatFormatting color, int particleCount,
-              int defaultWeight, double defaultHealth, double defaultDamage, double defaultSpeed) {
+              int defaultWeight, double defaultHealth, double defaultDamage, double defaultSpeed,
+              int defaultMinPowers, int defaultMaxPowers) {
         this.displayName = displayName;
         this.configName = configName;
         this.color = color;
@@ -56,6 +60,8 @@ public enum EliteTier {
         this.defaultHealth = defaultHealth;
         this.defaultDamage = defaultDamage;
         this.defaultSpeed = defaultSpeed;
+        this.defaultMinPowers = defaultMinPowers;
+        this.defaultMaxPowers = defaultMaxPowers;
     }
 
     /**
@@ -77,6 +83,17 @@ public enum EliteTier {
 
     public double speed() {
         return MagusConfig.tier(this).speed().getAsDouble();
+    }
+
+    /** Cuantos poderes le tocan a un elite de este rango: un numero al azar entre el minimo y el maximo. */
+    public int rollPowerCount(RandomSource random) {
+        int min = MagusConfig.tier(this).minPowers().getAsInt();
+        int max = MagusConfig.tier(this).maxPowers().getAsInt();
+        if (max <= min) {
+            return min;     // por si en la config alguien pone el maximo por debajo del minimo
+        }
+        // nextInt(n) da de 0 a n-1: con min 2 y max 3 -> 2 + (0 o 1) = 2 o 3.
+        return min + random.nextInt(max - min + 1);
     }
 
     /** Sortea un rango teniendo en cuenta los pesos. */
