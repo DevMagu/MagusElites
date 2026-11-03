@@ -45,7 +45,9 @@ public final class EliteSpawns {
         } else if (motivo == MobSpawnType.NATURAL) {
             // nextDouble() da un decimal al azar entre 0 y 1: es menor que 0.06 el 6 % de las veces.
             // La probabilidad sale de la config: .getAsDouble() lee el valor actual del archivo.
-            hacerElite = mob.getRandom().nextDouble() < MagusConfig.ELITE_CHANCE.getAsDouble();
+            // Y nunca dentro de la zona segura del spawn (ver SafeZone): "!" = "no".
+            hacerElite = !SafeZone.isInside(event.getLevel().getLevel(), mob.getX(), mob.getZ())
+                    && mob.getRandom().nextDouble() < MagusConfig.ELITE_CHANCE.getAsDouble();
         } else {
             hacerElite = false;                 // spawners, huevos...: nada (asi no hay granjas de elites)
         }
