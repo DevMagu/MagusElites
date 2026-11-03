@@ -1,5 +1,6 @@
 package com.magu.maguselites;
 
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -46,6 +47,16 @@ public final class Elites {
      * se multiplica encima del de nivel (ADD_MULTIPLIED_TOTAL).
      */
     public static void makeElite(Mob mob, EliteTier tier) {
+        makeElite(mob, tier, null);
+    }
+
+    /**
+     * Igual que el de arriba, pero eligiendo los poderes (lo usa /elite spawn). Dos metodos con el mismo nombre y
+     * distintos parametros se llama "sobrecarga": Java elige uno u otro segun lo que le pases.
+     *
+     * @param powers los poderes que llevara; null = al azar segun el rango (lo normal).
+     */
+    public static void makeElite(Mob mob, EliteTier tier, List<ElitePower> powers) {
         // Los porcentajes salen del rango: un Legendary lleva +200 % de vida (x3), un Strong +50 %...
         addModifier(mob, Attributes.MAX_HEALTH, "elite_health", tier.health(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         addModifier(mob, Attributes.ATTACK_DAMAGE, "elite_damage", tier.damage(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
@@ -57,7 +68,13 @@ public final class Elites {
         // El brillo de los Legendarios ya no va aqui: lo hace LegendaryGlow, solo para los jugadores cercanos.
 
         // Poderes de combate: Strong 0, Elite 1, Legendary 2 o 3 (lo que diga la config). Lo que hacen: EliteCombat.
-        ElitePower.giveRandom(mob, tier.rollPowerCount(mob.getRandom()));
+        if (powers == null) {
+            ElitePower.giveRandom(mob, tier.rollPowerCount(mob.getRandom()));
+        } else {
+            for (ElitePower power : powers) {
+                mob.addTag(power.tag());
+            }
+        }
     }
 
     /**
