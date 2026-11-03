@@ -3,18 +3,22 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 license="${mod_license}"
+# Donde avisar de fallos: sale en la lista de mods de NeoForge.
+issueTrackerURL="https://github.com/DevMagu/MagusElites/issues"
 
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 authors="Magu"
+displayURL="https://github.com/DevMagu/MagusElites"
 # Imagen de la lista de mods (está en src/main/resources). logoBlur=false: que el pixel art se vea nítido, sin difuminar.
 logoFile="logo.png"
 logoBlur=false
+# En ingles: es lo que lee la mayoria de jugadores.
 description='''
-Algunos monstruos aparecen como élites (Fuerte, Élite o Legendario): más vida, daño y poderes de combate, y sueltan equipo especial al morir.
-Solo hace falta en el servidor.
+Some monsters spawn as elites (Strong, Elite or Legendary) with more health, more damage and combat powers, and drop special gear when they die. Every monster also levels up as the days go by.
+Server-side only: players don't need to install it.
 '''
 # Mod solo de servidor: los jugadores que no lo tengan instalado pueden entrar igual.
 displayTest="IGNORE_SERVER_VERSION"
