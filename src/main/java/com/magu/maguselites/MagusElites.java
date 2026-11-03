@@ -45,5 +45,8 @@ public final class MagusElites {
         NeoForge.EVENT_BUS.addListener(EliteParticles::onEntityTick);
         // Cuando muere un mob: el botin de los elites.
         NeoForge.EVENT_BUS.addListener(EliteLoot::onLivingDrops);
+        // Poderes de combate: cuando alguien recibe daño, y en cada tick (el teletransporte).
+        NeoForge.EVENT_BUS.addListener(EliteCombat::onDamage);
+        NeoForge.EVENT_BUS.addListener(EliteCombat::onEntityTick);
     }
 }

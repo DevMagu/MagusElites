@@ -16,9 +16,10 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  */
 public final class MagusConfig {
 
-    /** Ajustes de un rango: un "record" es una clase pequeña que solo guarda datos (aqui, 4 opciones). */
+    /** Ajustes de un rango: un "record" es una clase pequeña que solo guarda datos (aqui, 6 opciones). */
     public record TierSettings(ModConfigSpec.IntValue weight, ModConfigSpec.DoubleValue health,
-                               ModConfigSpec.DoubleValue damage, ModConfigSpec.DoubleValue speed) {
+                               ModConfigSpec.DoubleValue damage, ModConfigSpec.DoubleValue speed,
+                               ModConfigSpec.IntValue minPowers, ModConfigSpec.IntValue maxPowers) {
     }
 
     // ---- elites ----
@@ -36,6 +37,10 @@ public final class MagusConfig {
     public static final ModConfigSpec.DoubleValue GLOW_DISTANCE;
     public static final ModConfigSpec.BooleanValue LEGENDARIES_IGNORE_SUN;
     public static final ModConfigSpec.BooleanValue SHOW_PARTICLES;
+
+    // ---- poderes ----
+    /** Cada poder -> su opcion de activado/desactivado. */
+    private static final Map<ElitePower, ModConfigSpec.BooleanValue> POWERS = new EnumMap<>(ElitePower.class);
 
     /** La "especificacion": la lista de todas las opciones. Se apunta en el constructor de MagusElites. */
     public static final ModConfigSpec SPEC;
@@ -63,7 +68,11 @@ public final class MagusConfig {
                     builder.comment("Extra attack damage (0.5 = +50%). Multiplies the level bonus.")
                             .defineInRange("damage", tier.defaultDamage, 0.0, 100.0),
                     builder.comment("Extra movement speed (0.2 = +20%).")
-                            .defineInRange("speed", tier.defaultSpeed, 0.0, 5.0)));
+                            .defineInRange("speed", tier.defaultSpeed, 0.0, 5.0),
+                    builder.comment("Fewest combat powers an elite of this tier gets.")
+                            .defineInRange("minPowers", tier.defaultMinPowers, 0, ElitePower.values().length),
+                    builder.comment("Most combat powers an elite of this tier gets (picked at random between min and max).")
+                            .defineInRange("maxPowers", tier.defaultMaxPowers, 0, ElitePower.values().length)));
             builder.pop();
         }
         builder.pop();
@@ -92,11 +101,21 @@ public final class MagusConfig {
         SHOW_PARTICLES = builder.comment("If true, elites are surrounded by particles of their tier's color.").define("showParticles", true);
         builder.pop();
 
+        // Una opcion por poder, con un bucle igual que el de los rangos.
+        builder.comment("Combat powers. Set one to false and no new elite will get it.").push("powers");
+        for (ElitePower power : ElitePower.values()) {
+            POWERS.put(power, builder.comment("Enable the " + power.displayName + " power.")
+                    .define(power.configName, true));
+        }
+        builder.pop();
+
         SPEC = builder.build();
     }
 
-    // effects
-
+    /** ¿Esta activado este poder en la config? */
+    public static boolean powerEnabled(ElitePower power) {
+        return POWERS.get(power).getAsBoolean();
+    }
 
     /** Ajustes de un rango. */
     public static TierSettings tier(EliteTier tier) {

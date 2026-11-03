@@ -55,18 +55,26 @@ public final class Elites {
         // name() da el nombre del valor en el codigo: "STRONG", "ELITE" o "LEGENDARY".
         mob.getPersistentData().putString(TIER_KEY, tier.name());
         // El brillo de los Legendarios ya no va aqui: lo hace LegendaryGlow, solo para los jugadores cercanos.
+
+        // Poderes de combate: Strong 0, Elite 1, Legendary 2 o 3 (lo que diga la config). Lo que hacen: EliteCombat.
+        ElitePower.giveRandom(mob, tier.rollPowerCount(mob.getRandom()));
     }
 
     /**
-     * Pone el nombre encima de la cabeza: "[Legendary] Zombi [Lv. 4]" en los elites (siempre visible, con el color
-     * del rango) y "Zombi [Lv. 4]" en los normales (blanco, solo se ve al apuntarles con la mira).
+     * Pone el nombre encima de la cabeza: "[Legendary] Venomous Blazing Zombi [Lv. 4]" en los elites (siempre visible,
+     * con el color del rango y sus poderes) y "Zombi [Lv. 4]" en los normales (blanco, solo al apuntarles con la mira).
      */
     public static void updateName(Mob mob) {
         EliteTier tier = getTier(mob);
         MutableComponent name;
         if (tier != null) {
             // Lo que se pega con append hereda el color: el tipo de mob y el nivel salen del color del rango.
-            name = Component.literal("[" + tier.displayName + "] ").withStyle(tier.color).append(mob.getType().getDescription());
+            name = Component.literal("[" + tier.displayName + "] ").withStyle(tier.color);
+            // Los poderes van delante del mob, como adjetivos en ingles: "Venomous Blazing Zombie".
+            for (ElitePower power : ElitePower.of(mob)) {
+                name.append(power.displayName + " ");
+            }
+            name.append(mob.getType().getDescription());
         } else {
             // getDescription() da un Component que no se puede modificar; copy() hace una copia que si.
             name = mob.getType().getDescription().copy();
