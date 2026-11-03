@@ -171,6 +171,11 @@ public final class EliteCommands {
     private static int level(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         ServerLevel overworld = source.getServer().overworld();
+        // Esta dentro de la zona segura quien escribe el comando?
+        Vec3 pos = source.getPosition();
+        if (SafeZone.isInside(source.getLevel(), pos.x, pos.z)) {
+            source.sendSuccess(() -> Component.literal("You are in the safe zone: no elites spawn here."), false);
+        }
 
         long day = MobLevels.currentDay(overworld);
         int mobLevel = MobLevels.currentLevel(overworld);

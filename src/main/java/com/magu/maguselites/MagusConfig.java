@@ -24,6 +24,7 @@ public final class MagusConfig {
 
     // ---- elites ----
     public static final ModConfigSpec.DoubleValue ELITE_CHANCE;
+    public static final ModConfigSpec.IntValue SAFE_ZONE_RADIUS;
     /** Un mapa guarda parejas clave -> valor: aqui, cada rango -> sus ajustes. */
     private static final Map<EliteTier, TierSettings> TIERS = new EnumMap<>(EliteTier.class);
 
@@ -55,6 +56,11 @@ public final class MagusConfig {
                 .comment("Chance for a naturally spawning monster to become an elite (0.06 = 6%).",
                         "Spawners and spawn eggs never create elites; /summon always does.")
                 .defineInRange("eliteChance", 0.06, 0.0, 1.0);
+        SAFE_ZONE_RADIUS = builder
+                .comment("No natural elites within this many blocks of the world spawn (normal monsters still get levels).",
+                        "In the Nether every block counts as 8 (like portals); in the End it's measured from the center.",
+                        "0 = no safe zone. /summon and /elite spawn still work inside it.")
+                .defineInRange("safeZoneRadius", 128, 0, 100000);
 
         // Una seccion por rango: [elites.strong], [elites.elite] y [elites.legendary].
         // Los valores por defecto salen de la tabla del enum EliteTier.
